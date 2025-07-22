@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
     <title>Birthday Invitation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Dancing+Script:wght@700&display=swap');
         
         :root {
-            --primary: #6A4FFF;
-            --secondary: #FF8D69;
+            --primary: #A67B5B; /* light brown */
+            --secondary: #D2B48C; /* tan */
             --accent: #FFFFFF;
-            --light: #F0F5F9;
-            --dark: #2E4053;
+            --light: #F5F0E6; /* very light brown */
+            --dark: #5C4033; /* dark brown */
             --dark-transparent: rgba(255, 255, 255, 0.95);
         }
         
@@ -46,6 +46,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-overflow-scrolling: touch;
         }
         
         .invitation-container {
@@ -171,12 +172,13 @@
         
         .confetti {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary);
-            opacity: 0;
+            opacity: 1;
             z-index: 0;
             animation: confetti-fall 5s linear infinite;
+            pointer-events: none;
+            border-radius: 50%; /* make images circular */
+            object-fit: cover; /* maintain aspect ratio and cover */
+            filter: sepia(0.4) saturate(1.5) hue-rotate(20deg) brightness(1.1) contrast(0.9); /* lighter brown tint */
         }
         
         @keyframes fadeInDown {
@@ -350,18 +352,18 @@
     </div>
 
     <script>
-        // Create confetti elements
+        // Create confetti elements as falling images
         function createConfetti() {
-            const colors = ['#6A4FFF', '#FF8D69', '#88C0D0', '#81A1C1'];
             for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
+                const confetti = document.createElement('img');
+                confetti.src = 'elre-head.png';
                 confetti.classList.add('confetti');
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.width = (Math.random() * 10 + 5) + 'px';
-                confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                const size = Math.random() * 40 + 30; // increased size range
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
                 confetti.style.animationDuration = (Math.random() * 5 + 3) + 's';
-                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.animationDelay = '0s'; // Removed random delay to avoid pause
                 document.body.appendChild(confetti);
             }
         }
@@ -400,8 +402,16 @@
         }, 1000);
         
         // Initialize confetti
-        document.addEventListener('DOMContentLoaded', createConfetti);
+        document.addEventListener('DOMContentLoaded', () => {
+            createConfetti();
+            const enterButton = document.getElementById('enter-button');
+            const introOverlay = document.getElementById('intro-overlay');
+            const invitationContainer = document.querySelector('.invitation-container');
+            enterButton.addEventListener('click', () => {
+                introOverlay.style.display = 'none';
+                invitationContainer.style.display = 'block';
+            });
+        });
     </script>
 </body>
 </html>
-
